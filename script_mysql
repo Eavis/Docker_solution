@@ -1,0 +1,5 @@
+"SELECT Censored, survival_time from clinical where age_at_initial > (SELECT AVG(age_at_initial) from clinical)"
+select Censored, survival_time from clinical where age_at_initial > (select AVG$
+select Censored, survival_time from clinical where age_at_initial >
+ (select AVG(age_at_initial) from clinical)
+
