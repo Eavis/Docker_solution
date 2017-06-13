@@ -36,6 +36,32 @@ var groupSel = $("#groupSel");
 
 $(function() {
 
+	// get slide host info
+	//
+	$.ajax({
+		url: "php/getSession.php",
+		data: "",
+		dataType: "json",
+		success: function(data) {
+
+			uid = data['uid'];
+			posClass = data['posClass'];
+			negClass = data['negClass'];
+			negClass = data['dataset'];
+
+			if( uid === null ) {
+				window.alert("No session active");
+				window.history.back();
+			}
+			else{
+				// will be used when the class names are requried.
+				//$("#posHeader1").text("Positive class : "+ posClass);
+				//$("#negHeader1").text("Negative class : "+ negClass);
+			}
+		}
+	});
+
+
 	d3.selection.prototype.moveToFront = function(){
 			return this.each(function(){
 					this.parentNode.appendChild(this);
