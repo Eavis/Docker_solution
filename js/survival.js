@@ -33,6 +33,9 @@ var groupname = "";
 var eventSel = $("#eventSel");
 var timeSel = $("#timeSel");
 var groupSel = $("#groupSel");
+var curDataset = "";
+var uid = null;
+
 
 $(function() {
 
@@ -45,32 +48,62 @@ $(function() {
 		success: function(data) {
 
 			uid = data['uid'];
-			posClass = data['posClass'];
-			negClass = data['negClass'];
-			negClass = data['dataset'];
+			curDataset = data['dataset'];
 
 			if( uid === null ) {
 				window.alert("No session active");
 				window.history.back();
 			}
 			else{
-				// will be used when the class names are requried.
-				//$("#posHeader1").text("Positive class : "+ posClass);
-				//$("#negHeader1").text("Negative class : "+ negClass);
+
+				getObjectCnt();
+
+				d3.selection.prototype.moveToFront = function(){
+						return this.each(function(){
+								this.parentNode.appendChild(this);
+						});
+				};
+				getInputDataAndDrawKM();
 			}
 		}
 	});
 
-
-	d3.selection.prototype.moveToFront = function(){
-			return this.each(function(){
-					this.parentNode.appendChild(this);
-			});
-	};
-	getInputDataAndDrawKM();
-
-
 });
+
+
+
+function getObjectCnt() {
+
+	// Display the progress dialog...
+	$('#progDiag').modal('show');
+
+	$.ajax({
+		type: "POST",
+		url: "php/getcounts.php",
+		data: { dataset: curDataset,
+				uid: uid
+			  },
+		dataType: "json",
+		success: function(data) {
+
+			slideSet = data;
+
+			for( var item in slideSet['scores'] ) {
+				var slide = String(slideSet['scores'][index]['slide']);
+				var posNum = slideSet['scores'][index]['posNum'];
+				var totalNum = slideSet['scores'][index]['totalNum'];
+			}
+
+			// Hide progress dialog
+			$('#progDiag').modal('hide');
+
+		},
+		failure: function() {
+			console.log("getCounts failed");
+		}
+	});
+}
+
 
 function getAge() {
 
